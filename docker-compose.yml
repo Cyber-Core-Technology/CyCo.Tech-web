@@ -1,6 +1,6 @@
 services:
   web:
-    image: cycotech-web:local
+    image: ghcr.io/cyber-core-technology/cyco.tech-web:latest
     container_name: cycotech-web
     restart: unless-stopped
     environment:
