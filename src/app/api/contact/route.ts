@@ -13,13 +13,27 @@ export async function POST(req: NextRequest) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return NextResponse.json({ error: 'Email inválido' }, { status: 400 })
 
-    const s = { name: sanitize(name), company: sanitize(company ?? ''), email: sanitize(email), message: sanitize(message) }
+    const s = {
+      name:    sanitize(name),
+      company: sanitize(company ?? ''),
+      email:   sanitize(email),
+      message: sanitize(message),
+    }
+
+    const port   = Number(process.env.SMTP_PORT ?? 587)
+    const secure = port === 465
 
     const t = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT ?? 587),
-      secure: Number(process.env.SMTP_PORT) === 465,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      port,
+      secure,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
     })
 
     await t.sendMail({
@@ -27,11 +41,34 @@ export async function POST(req: NextRequest) {
       to:      process.env.CONTACT_EMAIL,
       replyTo: s.email,
       subject: `[cyco.tech] Mensaje de ${s.name}`,
-      html: `<h2 style="color:#8B1A2B">Nuevo mensaje</h2>
-             <p><b>Nombre:</b> ${s.name}</p>
-             <p><b>Empresa:</b> ${s.company || '—'}</p>
-             <p><b>Email:</b> ${s.email}</p>
-             <p><b>Mensaje:</b><br/>${s.message}</p>`,
+      html: `
+        <div style="font-family:sans-serif;max-width:520px;margin:0 auto">
+          <h2 style="color:#8B1A2B;margin-bottom:16px">Nuevo mensaje desde cyco.tech</h2>
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <tr>
+              <td style="padding:8px 12px;background:#f5f5f5;font-weight:600;width:100px">Nombre</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eee">${s.name}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px;background:#f5f5f5;font-weight:600">Empresa</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eee">${s.company || '—'}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px;background:#f5f5f5;font-weight:600">Email</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eee">
+                <a href="mailto:${s.email}" style="color:#1D5A7A">${s.email}</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px;background:#f5f5f5;font-weight:600;vertical-align:top">Mensaje</td>
+              <td style="padding:8px 12px;white-space:pre-wrap">${s.message}</td>
+            </tr>
+          </table>
+          <p style="margin-top:24px;font-size:12px;color:#999">
+            Enviado desde cyco.tech
+          </p>
+        </div>
+      `,
     })
 
     return NextResponse.json({ ok: true })

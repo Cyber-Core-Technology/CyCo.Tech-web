@@ -3,37 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --bg:          #f7f8fc;
-  --bg-surface:  #eef0f7;
-  --bg-card:     #ffffff;
-  --border:      rgba(0,0,0,0.08);
-  --border-mid:  rgba(0,0,0,0.14);
-  --text:        #111827;
-  --text-muted:  #4b5563;
-  --text-hint:   #9ca3af;
-  --accent:      #8B1A2B;
-  --accent-hover:#c0374a;
-  --blue:        #1D5A7A;
-  --blue-hover:  #2d8ab8;
-  --badge-bg:    rgba(139,26,43,0.10);
-  --badge-text:  #8B1A2B;
+  --bg:           #f6f7fb;
+  --bg-surface:   #edeff6;
+  --bg-card:      #ffffff;
+  --border:       rgba(0,0,0,0.06);
+  --border-mid:   rgba(0,0,0,0.12);
+  --text:         #0c0e14;
+  --text-muted:   #525870;
+  --text-hint:    #9199b0;
+  --red:          #8B1A2B;
+  --red-hover:    #a82035;
+  --red-dim:      rgba(139,26,43,0.08);
+  --red-glow:     rgba(139,26,43,0.15);
+  --blue:         #1D5A7A;
+  --blue-dim:     rgba(29,90,122,0.08);
 }
 
 .dark {
-  --bg:          #0d0f14;
-  --bg-surface:  #151820;
-  --bg-card:     #1e2235;
-  --border:      rgba(255,255,255,0.08);
-  --border-mid:  rgba(255,255,255,0.14);
-  --text:        #f0f2f8;
-  --text-muted:  #8a90a8;
-  --text-hint:   #555c78;
-  --accent:      #c0374a;
-  --accent-hover:#e05a6f;
-  --blue:        #2d8ab8;
-  --blue-hover:  #4aa8d4;
-  --badge-bg:    rgba(192,55,74,0.18);
-  --badge-text:  #e05a6f;
+  --bg:           #07080d;
+  --bg-surface:   #0c0e16;
+  --bg-card:      #111420;
+  --border:       rgba(255,255,255,0.06);
+  --border-mid:   rgba(255,255,255,0.11);
+  --text:         #e8ecf5;
+  --text-muted:   #6b7490;
+  --text-hint:    #363d52;
+  --red:          #c0374a;
+  --red-hover:    #d94558;
+  --red-dim:      rgba(192,55,74,0.10);
+  --red-glow:     rgba(192,55,74,0.20);
+  --blue:         #2d8ab8;
+  --blue-dim:     rgba(45,138,184,0.10);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,44 +41,137 @@
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--text);
-  transition: background-color 0.3s ease, color 0.3s ease;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
+  transition: background 0.25s, color 0.25s;
 }
 
-::-webkit-scrollbar       { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
+::selection {
+  background: var(--red-dim);
+  color: var(--red);
+}
+
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 4px; }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* Animación scroll */
+/* ── Animaciones ──────────────────────────────────────────────────────────── */
 .anim {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(18px);
+  transition: opacity 0.6s cubic-bezier(.16,1,.3,1), transform 0.6s cubic-bezier(.16,1,.3,1);
 }
-.anim.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.anim.visible { opacity: 1; transform: translateY(0); }
 
-.section-wrapper {
+/* ── Layout ───────────────────────────────────────────────────────────────── */
+.wrapper {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 80px 24px;
+  padding: 100px 24px;
+}
+@media (max-width: 768px) { .wrapper { padding: 72px 20px; } }
+@media (max-width: 480px) { .wrapper { padding: 60px 16px; } }
+
+/* ── Botones ──────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(.16,1,.3,1);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+}
+.btn-primary:hover  { background: var(--red-hover); transform: translateY(-2px); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-mid);
+}
+.btn-ghost:hover  { background: var(--bg-surface); border-color: var(--text-hint); transform: translateY(-2px); }
+.btn-ghost:active { transform: translateY(0); }
+
+/* ── Tag / Badge ──────────────────────────────────────────────────────────── */
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--red-dim);
+  color: var(--red);
 }
 
-@media (max-width: 768px) {
-  .section-wrapper { padding: 56px 16px; }
+/* ── Línea acento ─────────────────────────────────────────────────────────── */
+.accent-line {
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--red);
+  border-radius: 2px;
+  margin: 14px 0 20px;
 }
+
+/* ── Grid pattern hero ────────────────────────────────────────────────────── */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+
+/* ── Card ─────────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: border-color 0.2s, transform 0.2s cubic-bezier(.16,1,.3,1);
+}
+.card:hover {
+  border-color: var(--border-mid);
+  transform: translateY(-2px);
+}
+
+/* ── Input ────────────────────────────────────────────────────────────────── */
+.input {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+.input::placeholder { color: var(--text-hint); }
+.input:focus        { border-color: var(--red); }

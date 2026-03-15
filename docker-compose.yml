@@ -1,6 +1,6 @@
 services:
   web:
-    image: ghcr.io/${GITHUB_REPOSITORY}:latest
+    image: cycotech-web:local
     container_name: cycotech-web
     restart: unless-stopped
     environment:

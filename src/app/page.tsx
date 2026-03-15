@@ -5,24 +5,22 @@ import Hero from '@/components/sections/Hero'
 import About from '@/components/sections/About'
 import Services from '@/components/sections/Services'
 import Cases from '@/components/sections/Cases'
-import WhyUs from '@/components/sections/WhyUs'
 import Contact from '@/components/sections/Contact'
 import ScrollAnimator from '@/components/layout/ScrollAnimator'
 
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <main id="main-content" role="main">
-        <Hero />
-        <About />
-        <Services />
-        <Cases />
-        <WhyUs />
-        <Contact />
+      <Navbar/>
+      <main id="main-content">
+        <Hero/>
+        <About/>
+        <Services/>
+        <Cases/>
+        <Contact/>
       </main>
-      <Footer />
-      <Suspense><ScrollAnimator /></Suspense>
+      <Footer/>
+      <Suspense><ScrollAnimator/></Suspense>
     </>
   )
 }
