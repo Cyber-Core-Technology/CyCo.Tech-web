@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+dist/
+
+# env — nunca al repo
+.env
+.env.local
+.env*.local
+
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.tsbuildinfo
+next-env.d.ts
