@@ -92,20 +92,15 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key:      ${{ secrets.SSH_PRIVATE_KEY }}
           port:     ${{ secrets.SSH_PORT }}
+          timeout:  60s
+          command_timeout: 15m
           script: |
             set -e
             cd ${{ secrets.DEPLOY_PATH }}
-
-            # Pull imagen nueva
+            git pull origin main
             echo ${{ secrets.GITHUB_TOKEN }} | \
               docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
             docker compose pull
-
-            # Recrear contenedor con zero-downtime básico
             docker compose up -d --remove-orphans
-
-            # Limpiar imágenes antiguas
             docker image prune -f
-
             echo "✅ Deploy completado: $(date)"
