@@ -130,4 +130,4 @@ docker logs cycotech-web --tail 50
 
 ## Licencia
 
-Propietario — © 2025 Cyber Core Technology, S.A.S. Todos los derechos reservados.
+Propietario — © 2026 Cyber Core Technology, S.A.S. Todos los derechos reservados.
